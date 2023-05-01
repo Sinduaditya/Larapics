@@ -10,10 +10,28 @@ class Image extends Model
 {
     use HasFactory;
 
+    public static function makeDirectory()
+    {
+        $subFolder = 'images/' . date('Y/m/d');
+        Storage::makeDirectory($subFolder);
+        return $subFolder;
+    }
 
-    public static function makeDirectory(){
-        $subfolder = 'images/' . date('Y/m/d');
-        Storage::makeDirectory($subfolder);
-        return $subfolder;
+    public static function getDimension($image)
+    {
+        [$width, $height] = getimagesize(Storage::path($image));
+        return $width . "x" . $height;
+    }
+
+    public function scopePublished($query)
+    {
+        return $query->where('is_published', true);
+    }
+
+    public function fileUrl()
+    {
+        return $this->profile_picture && Storage::exists($this->profile_picture) ?
+            Storage::url($this->profile_picture) :
+            "https://via.placeholder.com/150x150";
     }
 }
