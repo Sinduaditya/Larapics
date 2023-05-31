@@ -13,4 +13,14 @@ class ImageController extends Controller
 
         return view('image.index', compact('images'));
     }
+
+    public function show(Image $image)
+    {
+        return view('image.show', compact('image'));
+    }
+
+    public function create()
+    {
+        # code...
+    }
 }

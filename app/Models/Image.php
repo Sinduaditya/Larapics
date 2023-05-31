@@ -30,8 +30,13 @@ class Image extends Model
 
     public function fileUrl()
     {
-        return $this->profile_picture && Storage::exists($this->profile_picture) ?
-            Storage::url($this->profile_picture) :
-            "https://via.placeholder.com/150x150";
+        // return Storage::url($this->file);
+        return asset('storage/' . $this->file);
     }
+
+    public function permalink()
+    {
+        return route("images.show", $this->slug);
+    }
+
 }
