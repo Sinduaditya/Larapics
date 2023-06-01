@@ -41,4 +41,43 @@ class Image extends Model
         return $this->slug ? route("images.show", $this->slug) : '#';
     }
 
+    public function route($method, $key = 'id')
+    {
+        return route("images.{$method}", $this->$key);
+    }
+
+    public function getSlug(){
+        $slug = str($this->title)->slug();
+        // finding image in the images table where the slug column matches with the slug that
+        $numSlugsFound = static::where('slug', 'regexp',"^".  $slug . "(-[0-9])?")->count();
+        if($numSlugsFound > 0){
+            return $slug . "-" .$numSlugsFound + 1;
+        }
+
+        return $slug;
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($image){
+            if($image->title){
+                $image->slug = $image->getSlug();
+                $image->is_published = true;
+            }
+        });
+
+        static::updating(function ($image){
+            if($image->title && !$image->slug){
+                $image->slug = $image->getSlug();
+                $image->is_published = true;
+            }
+        });
+
+        static::deleted(function ($image){
+            Storage::delete($image->file);
+        });
+
+
+    }
+
 }

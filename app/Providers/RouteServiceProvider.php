@@ -38,6 +38,9 @@ class RouteServiceProvider extends ServiceProvider
     {
         // new
         Route::bind('image', function ($value){
+           if(is_numeric($value)){
+            return Image::where('id', $value)->firstOrFail();
+           }
            return Image::where('slug', $value)->published()->firstOrFail();
         });
 

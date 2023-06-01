@@ -12,5 +12,14 @@
         <a href="{{ $image->permalink() }}">
             <img src="{{ $image->fileUrl() }}" alt="{{ $image->title }}" width="300">
         </a>
+        <div>
+            <a href="{{ $image->route('edit') }}">Edit</a>
+            <form action="{{ $image->route('destroy') }}" method="POST" style="display: inline">
+                @csrf
+                @method('DELETE')
+                |
+                <button type="submit" onclick="return confirm('Are You sure?')"> Delete</button>
+            </form>
+        </div>
     </div>
 @endforeach
