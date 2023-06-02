@@ -48,7 +48,7 @@ class Image extends Model
 
     public function getSlug(){
         $slug = str($this->title)->slug();
-        // finding image in the images table where the slug column matches with the slug that
+        // finding image in the images table where the slug column matches with the slug
         $numSlugsFound = static::where('slug', 'regexp',"^".  $slug . "(-[0-9])?")->count();
         if($numSlugsFound > 0){
             return $slug . "-" .$numSlugsFound + 1;

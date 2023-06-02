@@ -49,9 +49,6 @@ class ImageRequest extends FormRequest
             $data['dimension'] = Image::getDimension($data['file']);
 
         }
-
-
-
         return $data;
     }
 
